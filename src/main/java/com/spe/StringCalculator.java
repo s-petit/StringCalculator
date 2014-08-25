@@ -60,7 +60,11 @@ public class StringCalculator {
 	}
 
 	private static int convertStringToInt(String text) {
-		return Integer.parseInt(text);
+		int result = Integer.parseInt(text);
+		if (result > 1000) {
+			result = 0;
+		}
+		return result;
 	}
 	
 }
