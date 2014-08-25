@@ -1,8 +1,11 @@
 package com.spe;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
+
+import com.spe.exception.NegativeNumberException;
 
 
 public class StringCalculatorTest {
@@ -17,11 +20,6 @@ public class StringCalculatorTest {
 	public void should_add_with_one_number() {
 		int result = StringCalculator.add("1");
 		assertThat(result).isEqualTo(1);		
-	}
-	
-	@Test(expected=NumberFormatException.class)
-	public void should_throw_NumberException_if_parameter_is_not_numeric() {
-		StringCalculator.add("toto, tata");
 	}
 	
 	@Test
@@ -41,17 +39,24 @@ public class StringCalculatorTest {
 		int result = StringCalculator.add("1\n2,3");
 		assertThat(result).isEqualTo(6);
 	}
-	
-	
-	@Test(expected=NumberFormatException.class)
-	public void should_throw_exception_if_tamer() {
-		StringCalculator.add("1,\n2,3");
-	}
+
 	
 	@Test
 	public void should_add_with_different_delimiters() {
 		
 		int result = StringCalculator.add("//;\n1;2");
 		assertThat(result).isEqualTo(3);
+	}
+	
+	@Test
+	public void should_throw_exception_when_add_negative_number() {
+		
+		try {
+			StringCalculator.add("//;\n-1;2;-3");
+			fail("Exception expected");
+		}
+		catch(RuntimeException nne) {
+			assertThat(nne.getMessage()).isEqualTo("negatives not allowed : [-1, -3]");
+		}
 	}
 }
