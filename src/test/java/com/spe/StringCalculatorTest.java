@@ -8,7 +8,6 @@ import org.junit.Test;
 
 public class StringCalculatorTest {
 
-	//TODO : renommer les methodes detest
 	@Test
 	public void should_return_zero_when_string_is_empty() {
 		int result = StringCalculator.add("");
@@ -54,8 +53,8 @@ public class StringCalculatorTest {
 			StringCalculator.add("//;\n-1;2;-3");
 			fail("Exception expected");
 		}
-		catch(RuntimeException nne) {
-			assertThat(nne.getMessage()).isEqualTo("negatives not allowed : [-1, -3]");
+		catch(NumberFormatException nfe) {
+			assertThat(nfe.getMessage()).isEqualTo("negatives not allowed : [-1, -3]");
 		}
 	}
 	
