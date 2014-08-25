@@ -5,8 +5,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.spe.exception.NegativeNumberException;
-
 
 public class StringCalculatorTest {
 

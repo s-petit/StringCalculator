@@ -25,8 +25,7 @@ public class StringCalculator {
 	}
 
 	private static List<String> convertTokensToList(String[] tokens) {
-		List<String> numbersToAdd = Arrays.asList(tokens);
-		return numbersToAdd;
+		return Arrays.asList(tokens);
 	}
 
 	private static String[] tokenize(String text) {
