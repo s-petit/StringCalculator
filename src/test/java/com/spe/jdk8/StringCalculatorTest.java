@@ -1,9 +1,11 @@
-package com.spe;
+package com.spe.jdk8;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+
+import com.spe.jdk8.StringCalculator;
 
 
 public class StringCalculatorTest {
