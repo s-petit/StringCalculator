@@ -20,8 +20,8 @@ public class StringCalculator {
             return 0;
         }
 
-        String[] tokens = tokenize(text);
-        List<String> numbersToAdd = convertTokensToList(tokens);
+        String[] numberTokens = tokenizeEachNumber(text);
+        List<String> numbersToAdd = convertTokensToList(numberTokens);
 
         checkForNegativeNumbers(numbersToAdd);
         return convertAndSum(numbersToAdd);
@@ -31,7 +31,7 @@ public class StringCalculator {
         return Arrays.asList(tokens);
     }
 
-    private static String[] tokenize(String text) {
+    private static String[] tokenizeEachNumber(String text) {
         String delimiter = DEFAULT_DELIMITER;
         String textToSum = text;
 
@@ -39,7 +39,7 @@ public class StringCalculator {
         Matcher matcher = pattern.matcher(textToSum);
 
         if (matcher.find()) {
-            delimiter = matcher.group(1);
+            delimiter = Pattern.quote(matcher.group(1));
             textToSum = matcher.group(2);
         }
 
@@ -47,7 +47,7 @@ public class StringCalculator {
     }
 
     private static int convertAndSum(List<String> numbersToAdd) {
-        return numbersToAdd.stream().mapToInt(x -> convertStringToInt(x)).sum();
+        return numbersToAdd.stream().filter(x -> convertStringToInt(x) <=1000).mapToInt(x -> convertStringToInt(x)).sum();
     }
 
     private static void checkForNegativeNumbers(List<String> numbersToAdd) {
@@ -65,11 +65,7 @@ public class StringCalculator {
     }
 
     private static int convertStringToInt(String text) {
-        int result = Integer.parseInt(text);
-        if (result > 1000) {
-            result = 0;
-        }
-        return result;
+        return Integer.parseInt(text);
     }
 
 }
