@@ -1,72 +1,73 @@
 package com.spe.jdk7;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class StringCalculator {
 
+    private static final String CUSTOM_DELIMITER = "//(.)\n(.+)";
+    private static final String DEFAULT_DELIMITER = ",|\n";
+    
     private StringCalculator() {}
     
-    public static int add(String numbers) {
+    public static int add(String textToAdd) {
 
-        if (numbers.isEmpty()) {
+        if (textToAdd.isEmpty()) {
             return 0;
         }
 
-        String[] tokens = tokenize(numbers);
+        String[] numberTokens = tokenizeEachNumber(textToAdd);
 
-        checkForNegativeNumbers(tokens);
-        return sumTokens(tokens);
+        checkNegativeNumbers(numberTokens);
+        return sumTokensBelow1001(numberTokens);
     }
 
-    private static int sumTokens(String[] tokens) {
-        List<String> numbers = Arrays.asList(tokens);
-        
-        
-        
+    private static int sumTokensBelow1001(String[] numberTokens) {
         int result = 0;
-        
-        result = numbers.stream().mapToInt(x -> convertStringToNumber(x)).sum();
-        
-//        for (String token : tokens) {
-//            result += convertStringToNumber(token);
-//        }
+        for (String token : numberTokens) {
+           int number = convertStringToInt(token);
+           if(number < 1001) {
+               result += number;
+           }        
+        }
 
         return result;
     }
 
-    private static void checkForNegativeNumbers(String[] tokens) {
-        
-        List<String> negativeNumbers = Arrays.asList(tokens);
-        
-        negativeNumbers = negativeNumbers.stream().filter(x -> convertStringToNumber(x) < 0).collect(Collectors.toList());
-
-        if (!negativeNumbers.isEmpty()) {
-            throw new NumberFormatException("negatives not allowed : "
-                    + negativeNumbers.toString());
+    private static void checkNegativeNumbers(String[] tokens) {
+        List<Integer> negativeNumbers = new ArrayList<>();
+        for (String token : tokens) {
+           int number = convertStringToInt(token);
+           if (number < 0) {
+              negativeNumbers.add(number);
+           }
+          
         }
-    }
+        if(!negativeNumbers.isEmpty()) {
+            throw new NumberFormatException("negatives not allowed : " + negativeNumbers.toString());
+         }
+     }
 
-    private static String[] tokenize(String numbers) {
+    private static String[] tokenizeEachNumber(String numbers) {
 
-        Pattern pattern = Pattern.compile("//(.)\n(.+)");
-        Matcher matcher = pattern.matcher(numbers);
+        String delimiter = DEFAULT_DELIMITER;
+        String stringToSplit = numbers;
 
-        String delimiter = ",|\n";
-        String textToSum = numbers;
+        Pattern pattern = Pattern.compile(CUSTOM_DELIMITER);
+        Matcher matcher = pattern.matcher(stringToSplit);
+
         if (matcher.find()) {
-            delimiter = matcher.group(1);
-            textToSum = matcher.group(2);
+           delimiter = Pattern.quote(matcher.group(1));
+           stringToSplit = matcher.group(2);
         }
 
-        return textToSum.split(delimiter);
+        return stringToSplit.split(delimiter);
 
     }
 
-    private static int convertStringToNumber(String number) {
+    private static int convertStringToInt(String number) {
         return Integer.parseInt(number);
     }
 

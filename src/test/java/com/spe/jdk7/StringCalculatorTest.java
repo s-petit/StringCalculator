@@ -62,8 +62,19 @@ public class StringCalculatorTest {
            assertThat(nfe.getMessage()).isEqualTo("negatives not allowed : [-1, -3]");
        }
        
-   }
+   }   
    
-   
+   @Test
+   public void should_sum_numbers_with_a_special_character_as_a_custom_delimiter() {
 
+       int result = StringCalculator.add("//*\n1*2");
+       assertThat(result).isEqualTo(3);
+   }
+
+
+   @Test
+   public void should_ignore_numbers_over_one_thousand() {
+       int result = StringCalculator.add("1,1001,2");
+       assertThat(result).isEqualTo(3);
+   }
 }

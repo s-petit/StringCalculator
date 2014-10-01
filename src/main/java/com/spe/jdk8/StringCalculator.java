@@ -24,7 +24,7 @@ public class StringCalculator {
         List<String> numbersToAdd = convertTokensToList(numberTokens);
 
         checkForNegativeNumbers(numbersToAdd);
-        return convertAndSum(numbersToAdd);
+        return convertAndSumNumbersBelow1001(numbersToAdd);
     }
 
     private static List<String> convertTokensToList(String[] tokens) {
@@ -46,7 +46,7 @@ public class StringCalculator {
         return textToSum.split(delimiter);
     }
 
-    private static int convertAndSum(List<String> numbersToAdd) {
+    private static int convertAndSumNumbersBelow1001(List<String> numbersToAdd) {
         return numbersToAdd.stream().filter(x -> convertStringToInt(x) <=1000).mapToInt(x -> convertStringToInt(x)).sum();
     }
 
